@@ -8,7 +8,7 @@ setup(
     version="0.1.0",
     author="Theo Henson",
     author_email="theodorehenson@protonmail.com",
-    description="p2p encrypted chat client written in python",
+    description="encrypted p2p chat client",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/tteeoo/claymore",
