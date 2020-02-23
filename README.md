@@ -1,4 +1,9 @@
 # claymore
-p2p chat client written in python
+
+```
+                 \.          claymore
+-===============-{]###=<>    encrypted p2p chat client
+                 /'          
+```
 
 WIP. Do not use.
