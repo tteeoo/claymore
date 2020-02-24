@@ -14,7 +14,7 @@ def encrypt(message, password):
     index += 1
     return ciphertext
 
-def decrypt(ciphertext, password, iv):
+def decrypt(ciphertext, password):
     global index
     iv = sha512((password + str(index*2)).encode("utf8")).digest() 
     password = sha512((password + str(index)).encode("utf8")).digest() 
