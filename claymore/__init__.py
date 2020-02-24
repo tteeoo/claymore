@@ -35,7 +35,7 @@ def main():
 
     CLIENT = socket(AF_INET, SOCK_STREAM)
 
-    server_init(PORT)
+    server_init(PORT, PASS)
 
     print("[CLIENT Thread] Waiting for connection...")
 

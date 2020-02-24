@@ -4,14 +4,14 @@ from sys import exit, stderr
 
 from .transmit import unconvert
 
-def main_loop(SERVER):
+def main_loop(SERVER, PASS):
     print("[SERVER Thread] Main loop started")
     client, client_address = SERVER.accept()
     while True:
         msg = client.recv(1024)
-        print("[SERVER Thread] Recieved from {}: {}".format(client_address, unconvert(msg, "hell")))
+        print("[SERVER Thread] Recieved from {}: {}".format(client_address, unconvert(msg, PASS)))
 
-def server_init(PORT):
+def server_init(PORT, PASS):
     SERVER = socket(AF_INET, SOCK_STREAM)
     try:
         SERVER.bind(("", PORT))
