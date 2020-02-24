@@ -1,12 +1,13 @@
 from socket import socket, AF_INET, SOCK_STREAM
 from threading import Thread
 from sys import argv
+
 from .transmit import convert
 from .server import server_init
 
 def prompt():
     global CLIENT
-    msg = input("> ")
+    msg = input("claymore> ")
     CLIENT.send(convert(msg, PASS))
     prompt()
 
