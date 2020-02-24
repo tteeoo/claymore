@@ -12,6 +12,9 @@ def prompt():
     prompt()
 
 def main():
+    global PASS
+    global CLIENT
+
     try:
         argv[1]
     except IndexError:
@@ -30,7 +33,6 @@ def main():
         else:
             PASS = argv[2]
 
-    global CLIENT
     CLIENT = socket(AF_INET, SOCK_STREAM)
 
     server_init(PORT)
