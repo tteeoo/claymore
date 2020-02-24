@@ -4,25 +4,42 @@ from sys import argv
 from .transmit import convert
 from .server import server_init
 
-def prompt(CLIENT):
+def prompt():
+    global CLIENT
     msg = input("> ")
-    CLIENT.send(convert(msg, "hell"))
-    prompt(CLIENT)
+    CLIENT.send(convert(msg, PASS))
+    prompt()
 
 def main():
+    try:
+        argv[1]
+    except NameError:
+        print("Error: Invalid arguments")
+        HOST, int(PORT) = input("Enter ip and port (colon seperated): ").split(":")
+        PASS = input("Enter password: ")
+    else:
+        HOST, int(PORT) = argv[1].split(":")
+        try:
+            argv[2]
+        except NameError:
+            print("Error: Invalid arguments")
+            PASS = input("Enter password: ")
+        else:
+            PASS = argv[2]
+
     CLIENT = socket(AF_INET, SOCK_STREAM)
 
-    server_init()
+    server_init(PORT)
 
     print("[CLIENT Thread] Waiting for connection...")
 
     while True:
         try:
-            CLIENT.connect((argv[1], int(argv[2])))
+            CLIENT.connect((HOST, PORT))
             break
         except:
             pass
 
     print("[CLIENT Thread] Connected!")
 
-    prompt(CLIENT)
+    prompt()
