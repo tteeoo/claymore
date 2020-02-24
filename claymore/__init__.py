@@ -30,6 +30,7 @@ def main():
         else:
             PASS = argv[2]
 
+    global CLIENT
     CLIENT = socket(AF_INET, SOCK_STREAM)
 
     server_init(PORT)
