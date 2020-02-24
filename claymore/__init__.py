@@ -37,7 +37,6 @@ def main():
     print("[CLIENT Thread] Waiting for connection...")
 
     while True:
-        CLIENT.connect((HOST, PORT))
         try:
             CLIENT.connect((HOST, PORT))
             break
