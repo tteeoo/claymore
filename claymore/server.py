@@ -20,5 +20,5 @@ def server_init(PORT, PASS):
         exit(1)
 
     SERVER.listen(1)
-    Thread(target=main_loop, args=(SERVER,)).start()
+    Thread(target=main_loop, args=(SERVER, PASS,)).start()
 
