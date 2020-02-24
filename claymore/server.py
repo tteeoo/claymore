@@ -1,5 +1,6 @@
 from socket import socket, AF_INET, SOCK_STREAM
 from threading import Thread
+from sys import exit, stderr
 
 from .transmit import unconvert
 
@@ -12,7 +13,12 @@ def main_loop(SERVER):
 
 def server_init(PORT):
     SERVER = socket(AF_INET, SOCK_STREAM)
-    SERVER.bind(("", PORT))
+    try:
+        SERVER.bind(("", PORT))
+    except PermissionError:
+        print("Error: Invalid permissions (run as root)", file=stderr)
+        exit(1)
+
     SERVER.listen(1)
     Thread(target=main_loop, args=(SERVER,)).start()
 

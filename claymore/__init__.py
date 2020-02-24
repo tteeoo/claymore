@@ -1,6 +1,6 @@
 from socket import socket, AF_INET, SOCK_STREAM
 from threading import Thread
-from sys import argv
+from sys import argv, stderr
 
 from .transmit import convert
 from .server import server_init
@@ -14,16 +14,18 @@ def prompt():
 def main():
     try:
         argv[1]
-    except NameError:
-        print("Error: Invalid arguments")
-        HOST, int(PORT) = input("Enter ip and port (colon seperated): ").split(":")
+    except IndexError:
+        print("Error: Invalid arguments", file=stderr)
+        HOST, PORT = input("Enter ip and port (colon seperated): ").split(":")
+        PORT = int(PORT)
         PASS = input("Enter password: ")
     else:
-        HOST, int(PORT) = argv[1].split(":")
+        HOST, PORT = argv[1].split(":")
+        PORT = int(PORT)
         try:
             argv[2]
-        except NameError:
-            print("Error: Invalid arguments")
+        except IndexError:
+            print("Error: Invalid arguments", file=stderr)
             PASS = input("Enter password: ")
         else:
             PASS = argv[2]
@@ -35,10 +37,11 @@ def main():
     print("[CLIENT Thread] Waiting for connection...")
 
     while True:
+        CLIENT.connect((HOST, PORT))
         try:
             CLIENT.connect((HOST, PORT))
             break
-        except:
+        except ConnectionRefusedError:
             pass
 
     print("[CLIENT Thread] Connected!")
