@@ -1,20 +1,20 @@
 from Crypto.Cipher import AES
-from hashlib import pbkdf2_hmac
+from hashlib import pbkdf2_hmac, sha256
 
 index = 0
 
 def encrypt(message, password):
     global index
-    iv = pbkdf2_hmac("sha256", bytes(password, "utf8"), (index*2).to_bytes(16, byteorder="big"), 200000, dklen=8).hex()
-    key = pbkdf2_hmac("sha256", bytes(password, "utf8"), index.to_bytes(16, byteorder="big"), 200000, dklen=16).hex()
+    key = sha256(password + str(index**9)).hexdigest()
+    iv = key[0:16]
     obj = AES.new(key, AES.MODE_CFB, iv)
     ciphertext = obj.encrypt(message)
     return ciphertext
 
 def decrypt(ciphertext, password):
     global index
-    iv = pbkdf2_hmac("sha256", bytes(password, "utf8"), (index*2).to_bytes(16, byteorder="big"), 200000, dklen=8).hex()
-    key = pbkdf2_hmac("sha256", bytes(password, "utf8"), index.to_bytes(16, byteorder="big"), 200000, dklen=16).hex()
+    key = sha256(password + str(index**9)).hexdigest()
+    iv = key[0:16]
     obj = AES.new(key, AES.MODE_CFB, iv)
     message = obj.decrypt(ciphertext)
     return message
@@ -37,3 +37,7 @@ def unconvert(m, p):
     index += 1
 
     return m
+
+def hashpass(password):
+    password = pbkdf2_hmac("sha256", bytes(password, "utf8"), (123456789).to_bytes(16, byteorder="big"), 200000).hex()
+    return password

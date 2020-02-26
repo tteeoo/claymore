@@ -3,7 +3,7 @@ from threading import Thread
 from sys import argv, stderr
 from time import sleep
 
-from .transmit import convert
+from .transmit import convert, hashpass
 from .server import server_init
 
 def prompt():
@@ -39,6 +39,8 @@ def main():
             PASS = argv[2]
 
     CLIENT = socket(AF_INET, SOCK_STREAM)
+
+    PASS = hashpass(PASS)
 
     server_init(PORT, PASS)
 
