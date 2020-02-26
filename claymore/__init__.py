@@ -8,7 +8,6 @@ from .server import server_init
 
 def prompt():
     global CLIENT
-    sleep(0.5)
     msg = input("claymore> ")
     if msg != "":
         CLIENT.send(convert(msg, PASS))
