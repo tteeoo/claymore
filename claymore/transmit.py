@@ -5,7 +5,7 @@ index = 0
 
 def encrypt(message, password):
     global index
-    key = sha256(password + str(index**9)).hexdigest()
+    key = sha256((password + str(index**9)).encode("utf8")).hexdigest()
     iv = key[0:16]
     obj = AES.new(key, AES.MODE_CFB, iv)
     ciphertext = obj.encrypt(message)
@@ -13,7 +13,7 @@ def encrypt(message, password):
 
 def decrypt(ciphertext, password):
     global index
-    key = sha256(password + str(index**9)).hexdigest()
+    key = sha256((password + str(index**9)).encode("utf8")).hexdigest()
     iv = key[0:16]
     obj = AES.new(key, AES.MODE_CFB, iv)
     message = obj.decrypt(ciphertext)
