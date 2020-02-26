@@ -9,7 +9,7 @@ def main_loop(SERVER, PASS):
     client, client_address = SERVER.accept()
     while True:
         msg = client.recv(1024)
-        print("[SERVER Thread] Recieved from {}: {}".format(client_address[0], unconvert(msg, PASS)))
+        print("[SERVER Thread] Received from {}: {}".format(client_address[0], unconvert(msg, PASS)))
 
 def server_init(PORT, PASS):
     SERVER = socket(AF_INET, SOCK_STREAM)
