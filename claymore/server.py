@@ -1,6 +1,7 @@
 from socket import socket, AF_INET, SOCK_STREAM, SO_REUSEADDR, SOL_SOCKET
 from threading import Thread
 from sys import exit, stderr
+from os import _exit
 
 from .transmit import unconvert
 
@@ -24,7 +25,7 @@ def server_init(PORT, PASS, HOST):
             msg = unconvert(client.recv(1024), PASS)
             if msg == "/quit":
                 print("[SERVER Thread] Remote host quit")
-                exit(0)
+                _exit(0)
 
             print("[SERVER Thread] Received from {}: {}".format(client_address[0], msg))
 
