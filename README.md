@@ -39,3 +39,8 @@ That sha256 hash is then used as your key to encrypt/decrypt that message using 
 With this model, every message is encrypted with a different AES key that is never sent over the wire.
 
 I'm not sure if this is totally secure, an it most certainly isn't the best method, but this project is more of me messing around with/learning basic cryptography.
+
+
+# License
+
+All files are licensed under the MIT License
