@@ -7,13 +7,23 @@ from .transmit import convert, hashpass
 from .server import server_init
 
 def prompt():
-    global CLIENT
-    msg = input("claymore> ")
-    if msg != "":
+    try:
+        msg = input("claymore> ")
+    except (KeyboardInterrupt, SystemExit):
+        quit()
+    if msg == "/quit":
+        quit()
+    elif msg != "":
         CLIENT.send(convert(msg, PASS))
     else:
         prompt()
     prompt()
+
+def quit():
+    CLIENT.send(convert("/quit", PASS))
+    CLIENT.close()
+    print("[CLIENT Thread] Quitting...")
+    exit(0)
 
 def main():
     global PASS
@@ -29,7 +39,12 @@ def main():
         exit(1)
 
     CLIENT = socket(AF_INET, SOCK_STREAM)
-    server_init(ADDR[1], PASS, gethostbyname(ADDR[0]))
+
+    SERVER_THREAD = Thread(target=server_init,daemon=True,args=(ADDR[1], PASS, gethostbyname(ADDR[0]),))
+    try:
+        SERVER_THREAD.start()
+    except (KeyboardInterrupt, SystemExit):
+        quit()
 
     print("[CLIENT Thread] Waiting for connection...")
     while True:

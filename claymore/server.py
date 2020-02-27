@@ -4,16 +4,6 @@ from sys import exit, stderr
 
 from .transmit import unconvert
 
-def main_loop(SERVER, PASS, HOST):
-    print("[SERVER Thread] Listening...")
-    client, client_address = SERVER.accept()
-    if client_address[0] != HOST:
-        print("[SERVER Thread] Unauthorized host ({}) attempted to send data to this port".format(client_address[0]))
-    else:
-        while True:
-            msg = client.recv(1024)
-            print("[SERVER Thread] Received from {}: {}".format(client_address[0], unconvert(msg, PASS)))
-
 def server_init(PORT, PASS, HOST):
     SERVER = socket(AF_INET, SOCK_STREAM)
     SERVER.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
@@ -25,5 +15,16 @@ def server_init(PORT, PASS, HOST):
         exit(1)
 
     SERVER.listen(1)
-    Thread(target=main_loop, args=(SERVER, PASS, HOST,)).start()
+    print("[SERVER Thread] Listening...")
+    client, client_address = SERVER.accept()
+    if client_address[0] != HOST:
+        print("[SERVER Thread] Unauthorized host ({}) attempted to send data to this port".format(client_address[0]))
+    else:
+        while True:
+            msg = unconvert(client.recv(1024), PASS)
+            if msg == "/quit":
+                print("[SERVER Thread] Remote host quit")
+                exit(0)
+
+            print("[SERVER Thread] Received from {}: {}".format(client_address[0], msg))
 
