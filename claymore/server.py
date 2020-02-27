@@ -4,22 +4,26 @@ from sys import exit, stderr
 
 from .transmit import unconvert
 
-def main_loop(SERVER, PASS):
-    print("[SERVER Thread] Main loop started")
+def main_loop(SERVER, PASS, HOST):
+    print("[SERVER Thread] Listening...")
     client, client_address = SERVER.accept()
-    while True:
-        msg = client.recv(1024)
-        print("[SERVER Thread] Received from {}: {}".format(client_address[0], unconvert(msg, PASS)))
+    if client_address[0] != HOST:
+        print("[SERVER Thread] Unauthorized host ({}) attempted to send data to this port".format(client_address[0]))
+    else:
+        while True:
+            msg = client.recv(1024)
+            print("[SERVER Thread] Received from {}: {}".format(client_address[0], unconvert(msg, PASS)))
 
-def server_init(PORT, PASS):
+def server_init(PORT, PASS, HOST):
     SERVER = socket(AF_INET, SOCK_STREAM)
     SERVER.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+
     try:
         SERVER.bind(("", PORT))
     except PermissionError:
-        print("Error: Invalid permissions (run as root)", file=stderr)
+        print("[SERVER Thread] Error: Invalid permissions (run as root)", file=stderr)
         exit(1)
 
     SERVER.listen(1)
-    Thread(target=main_loop, args=(SERVER, PASS,)).start()
+    Thread(target=main_loop, args=(SERVER, PASS, HOST,)).start()
 

@@ -1,6 +1,6 @@
-from socket import socket, AF_INET, SOCK_STREAM
+from socket import socket, AF_INET, SOCK_STREAM, gethostbyname
 from threading import Thread
-from sys import argv, stderr
+from sys import argv, stderr, exit
 from time import sleep
 
 from .transmit import convert, hashpass
@@ -20,38 +20,24 @@ def main():
     global CLIENT
 
     try:
-        argv[1]
-    except IndexError:
-        print("Error: Invalid arguments", file=stderr)
-        HOST, PORT = input("Enter ip and port (colon seperated): ").split(":")
+        HOST, PORT = (argv[1].split(":"))
         PORT = int(PORT)
-        PASS = input("Enter password: ")
-    else:
-        HOST, PORT = argv[1].split(":")
-        PORT = int(PORT)
-        try:
-            argv[2]
-        except IndexError:
-            print("Error: Invalid arguments", file=stderr)
-            PASS = input("Enter password: ")
-        else:
-            PASS = argv[2]
+        ADDR = (HOST, PORT)
+        PASS = hashpass(argv[2])
+    except (IndexError, ValueError):
+        print("[CLIENT Thread] Error: Invalid arguments", file=stderr)
+        exit(1)
 
     CLIENT = socket(AF_INET, SOCK_STREAM)
-
-    PASS = hashpass(PASS)
-
-    server_init(PORT, PASS)
+    server_init(ADDR[1], PASS, gethostbyname(ADDR[0]))
 
     print("[CLIENT Thread] Waiting for connection...")
-
     while True:
         try:
-            CLIENT.connect((HOST, PORT))
+            CLIENT.connect(ADDR)
             break
         except ConnectionRefusedError:
             pass
-
     print("[CLIENT Thread] Connected!")
 
     prompt()
