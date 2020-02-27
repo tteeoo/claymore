@@ -43,4 +43,4 @@ I'm not sure if this is totally secure, an it most certainly isn't the best meth
 
 # License
 
-All files are licensed under the MIT License
+All files are licensed under the MIT License.
