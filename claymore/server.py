@@ -12,20 +12,19 @@ def server_init(PORT, PASS, HOST):
     try:
         SERVER.bind(("", PORT))
     except PermissionError:
-        print("[SERVER Thread] Error: Invalid permissions (run as root)", file=stderr)
-        _exit(0)
+        print("Error: Invalid permissions (run as root)", file=stderr)
+        _exit(1)
 
     SERVER.listen(1)
-    print("[SERVER Thread] Listening...")
     client, client_address = SERVER.accept()
     if client_address[0] != HOST:
-        print("[SERVER Thread] Unauthorized host ({}) attempted to send data to this port".format(client_address[0]))
+        print("Unauthorized host ({}) attempted to send data to this port".format(client_address[0]))
     else:
         while True:
             msg = unconvert(client.recv(1024), PASS)
             if msg == "/quit":
-                print("[SERVER Thread] Remote host quit")
+                print("Remote host quit")
                 _exit(0)
 
-            print("[SERVER Thread] Received from {}: {}".format(client_address[0], msg))
+            print("\nReceived from {}: {}".format(client_address[0], msg))
 

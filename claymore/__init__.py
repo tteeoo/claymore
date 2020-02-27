@@ -22,7 +22,7 @@ def prompt():
 def quit():
     CLIENT.send(convert("/quit", PASS))
     CLIENT.close()
-    print("[CLIENT Thread] Quitting...")
+    print("Quitting...")
     exit(0)
 
 def main():
@@ -58,7 +58,7 @@ Copyright (c) 2020 Theo Henson, MIT License
             ADDR = (HOST, PORT)
             PASS = hashpass(argv[2])
     except (IndexError, ValueError):
-        print("[CLIENT Thread] Error: Invalid arguments, run \"claymore --help\" for usage", file=stderr)
+        print("Error: Invalid arguments, run \"claymore --help\" for usage", file=stderr)
         exit(1)
 
     CLIENT = socket(AF_INET, SOCK_STREAM)
@@ -69,13 +69,13 @@ Copyright (c) 2020 Theo Henson, MIT License
     except (KeyboardInterrupt, SystemExit):
         quit()
 
-    print("[CLIENT Thread] Waiting for connection...")
+    print("Waiting for connection...")
     while True:
         try:
             CLIENT.connect(ADDR)
             break
         except ConnectionRefusedError:
             pass
-    print("[CLIENT Thread] Connected!")
+    print("Connected!")
 
     prompt()
