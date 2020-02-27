@@ -13,7 +13,7 @@ def server_init(PORT, PASS, HOST):
         SERVER.bind(("", PORT))
     except PermissionError:
         print("[SERVER Thread] Error: Invalid permissions (run as root)", file=stderr)
-        exit(1)
+        _exit(0)
 
     SERVER.listen(1)
     print("[SERVER Thread] Listening...")

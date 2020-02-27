@@ -30,12 +30,35 @@ def main():
     global CLIENT
 
     try:
-        HOST, PORT = (argv[1].split(":"))
-        PORT = int(PORT)
-        ADDR = (HOST, PORT)
-        PASS = hashpass(argv[2])
+        if argv[1] == "-h" or argv[1] == "--help":
+            print("""
+Usage: claymore [<host>:<port> <password>] | [FLAG]
+
+Flags:
+    -V, --version: Displays version information
+
+    -h, --help: Displays usage information
+    
+claymore must be ran as root
+
+Repository hosted on GitHub: https://github.com/tteeoo/claymore
+Copyright (c) 2020 Theo Henson, MIT License
+""")
+            exit(0)
+        elif argv[1] == "-V" or argv[1] == "--version":
+            print("""
+                   \.          claymore 0.1.0
+  -===============-{]###=<>    encrypted p2p chat client
+                   /'          by Theo Henson      
+""")
+            exit(0)
+        else:
+            HOST, PORT = (argv[1].split(":"))
+            PORT = int(PORT)
+            ADDR = (HOST, PORT)
+            PASS = hashpass(argv[2])
     except (IndexError, ValueError):
-        print("[CLIENT Thread] Error: Invalid arguments", file=stderr)
+        print("[CLIENT Thread] Error: Invalid arguments, run \"claymore --help\" for usage", file=stderr)
         exit(1)
 
     CLIENT = socket(AF_INET, SOCK_STREAM)
