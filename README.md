@@ -13,7 +13,7 @@ While this should be cross platform, windows doesn't like the `pycrypto` python 
 Clone the repository, cd into it, then run:
 
 ```
-# pip install .
+# python3 -m pip install .
 ```
 
 You can install it without root, but you might need to mess around with your `PATH` variable.
