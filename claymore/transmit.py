@@ -21,6 +21,7 @@ def decrypt(ciphertext, password):
 
 def convert(m, p):
     global index
+    m = bytes(m, "utf8")
     m = encrypt(m, p)
     index += 1
 
