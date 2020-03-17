@@ -6,6 +6,8 @@
                  /'          
 ```
 
+While this should be cross platform, windows doesn't like the `pycrypto` python module. I will get around to replacing this library with a newer one that works on windows.
+
 # Installation
 
 Clone the repository, cd into it, then run:
